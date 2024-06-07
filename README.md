@@ -1,11 +1,7 @@
-ESP-IDF template app
-====================
+# 二维码收款器
 
-This is a template application to be used with [Espressif IoT Development Framework](https://github.com/espressif/esp-idf).
+默认展示支付宝收款码，可点击按钮切换。
 
-Please check [ESP-IDF docs](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html) for getting started instructions.
+## 效果截图
 
-*Code in this repository is in the Public Domain (or CC0 licensed, at your option.)
-Unless required by applicable law or agreed to in writing, this
-software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-CONDITIONS OF ANY KIND, either express or implied.*
+![image](https://s2.loli.net/2024/06/07/MAYIaWbFUwTPHmg.jpg)
