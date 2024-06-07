@@ -34,6 +34,16 @@ void app_main(void)
     image_display();
 }
 
+const char* get_image_filename(const char* input) {
+    if (strcmp(input, "alipay") == 0) {
+        return "alipay.png";
+    } else if (strcmp(input, "wechat") == 0) {
+        return "wechat.png";
+    } else {
+        return "unknown.png";
+    }
+}
+
 static void btn_event_cb(lv_event_t *event)
 {
     lv_obj_t *img = (lv_obj_t *) event->user_data;
@@ -43,13 +53,13 @@ static void btn_event_cb(lv_event_t *event)
     if (NULL != file_name_with_path) {
         /* Get full file name with mount point and folder path */
         strcpy(file_name_with_path, "S:/spiffs/");
-        strcat(file_name_with_path, file_name);
+        strcat(file_name_with_path, get_image_filename(file_name));
 
         /* Set src of image with file name */
         lv_img_set_src(img, file_name_with_path);
 
         /* Align object */
-        lv_obj_align(img, LV_ALIGN_CENTER, 80, 0);
+        lv_obj_align(img, LV_ALIGN_CENTER, 0, -20);
 
         /* Only for debug */
         ESP_LOGI(TAG, "Display image file : %s", file_name_with_path);
@@ -70,27 +80,21 @@ static void image_display(void)
         lv_indev_set_group(indev, g_btn_op_group);
     }
 
-    lv_obj_t *list = lv_list_create(lv_scr_act());
-    lv_obj_set_size(list, 170, 220);
-    lv_obj_set_style_border_width(list, 0, LV_STATE_DEFAULT);
-    lv_obj_align(list, LV_ALIGN_LEFT_MID, -15, 0);
-
     lv_obj_t *img = lv_img_create(lv_scr_act());
 
-    /* Get file name in storage */
-    struct dirent *p_dirent = NULL;
-    DIR *p_dir_stream = opendir("/spiffs");
+    lv_obj_t *btn1 = lv_btn_create(lv_scr_act());
+    lv_obj_set_size(btn1, 70, 30);
+    lv_obj_add_event_cb(btn1, btn_event_cb, LV_EVENT_CLICKED, (void *) img);
+    lv_obj_align(btn1, LV_ALIGN_BOTTOM_LEFT, 10, -10);
+    lv_obj_t *label1 = lv_label_create(btn1);
+    lv_label_set_text(label1, "alipay");
 
-    /* Scan files in storage */
-    while (true) {
-        p_dirent = readdir(p_dir_stream);
-        if (NULL != p_dirent) {
-            lv_obj_t *btn = lv_list_add_btn(list, LV_SYMBOL_IMAGE, p_dirent->d_name);
-            lv_group_add_obj(g_btn_op_group, btn);
-            lv_obj_add_event_cb(btn, btn_event_cb, LV_EVENT_CLICKED, (void *) img);
-        } else {
-            closedir(p_dir_stream);
-            break;
-        }
-    }
+    lv_obj_t *btn2 = lv_btn_create(lv_scr_act());
+    lv_obj_set_size(btn2, 70, 30);
+    lv_obj_add_event_cb(btn2, btn_event_cb, LV_EVENT_CLICKED, (void *) img);
+    lv_obj_align(btn2, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
+    lv_obj_t *label2 = lv_label_create(btn2);
+    lv_label_set_text(label2, "wechat");
+
+    lv_event_send(btn1, LV_EVENT_CLICKED, NULL);
 }
