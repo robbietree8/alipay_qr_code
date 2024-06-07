@@ -3,4 +3,9 @@
 cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(app-template)
+set(EXTRA_COMPONENT_DIRS
+    $ENV{ESP_BOX_PATH}/components
+    )
+
+add_compile_options(-fdiagnostics-color=always)
+project(pay_qr_code_display)
